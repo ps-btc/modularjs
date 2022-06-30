@@ -135,14 +135,16 @@ export default class {
         if (this.modules[mod]) {
             if (id) {
                 if (this.modules[mod][id]) {
-                    this.modules[mod][id][func](args);
+                    return this.modules[mod][id][func](args);
                 }
             } else {
-                Object.keys(this.modules[mod]).forEach((id) => {
-                    this.modules[mod][id][func](args);
+                return Object.keys(this.modules[mod]).map((id) => {
+                    return this.modules[mod][id][func](args);
                 });
             }
         }
+
+        return null;
     }
 
     on(e, mod, func, id) {

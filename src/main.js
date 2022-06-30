@@ -165,4 +165,4 @@ export default class {
     }
 }
 
-export {default as module} from './module';
+export {default as Module} from './module';
