@@ -538,5 +538,5 @@ var _default$1 = /*#__PURE__*/function () {
   return _default;
 }();
 
+exports.Module = _default;
 exports.default = _default$1;
-exports.module = _default;

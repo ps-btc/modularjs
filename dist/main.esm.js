@@ -535,4 +535,4 @@ var _default$1 = /*#__PURE__*/function () {
 }();
 
 export default _default$1;
-export { _default as module };
+export { _default as Module };
