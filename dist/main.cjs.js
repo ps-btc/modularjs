@@ -291,6 +291,14 @@ var _default = /*#__PURE__*/function () {
         args = false;
       }
 
+      if (mod === "*") {
+        return Object.keys(this.modules).map(function (_mod) {
+          return Object.keys(_this3.modules[_mod]).map(function (id) {
+            return _this3.modules[_mod][id][func](args);
+          });
+        });
+      }
+
       if (this.modules[mod]) {
         if (id) {
           if (this.modules[mod][id]) {
