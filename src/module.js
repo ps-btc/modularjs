@@ -132,6 +132,14 @@ export default class {
             args = false;
         }
 
+        if (mod === "*") {
+            return Object.keys(this.modules).map((_mod) => {
+                return Object.keys(this.modules[_mod]).map((id) => {
+                    return this.modules[_mod][id][func](args);
+                });
+            });
+        }
+
         if (this.modules[mod]) {
             if (id) {
                 if (this.modules[mod][id]) {
