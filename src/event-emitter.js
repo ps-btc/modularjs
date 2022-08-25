@@ -8,19 +8,19 @@ class EventEmitter {
 
     // Key functions.
 
-    on(name, cb) {
+    on({name, cb}) {
         this._addEvent(name, cb);
     }
 
-    off(name, cb) {
+    off({name, cb}) {
         this._removeCallback(name, cb);
     }
 
-    emit(name, data = {}) {
+    emit({name, data = {}}) {
         this._triggerEvent(name, data);
     }
 
-    hasEvent(name) {
+    hasEvent({name}) {
         return this._events.has(name);
     }
 

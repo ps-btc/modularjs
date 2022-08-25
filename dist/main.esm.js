@@ -216,24 +216,33 @@ var EventEmitter = /*#__PURE__*/function () {
 
   _createClass(EventEmitter, [{
     key: "on",
-    value: function on(name, cb) {
+    value: function on(_ref) {
+      var name = _ref.name,
+          cb = _ref.cb;
+
       this._addEvent(name, cb);
     }
   }, {
     key: "off",
-    value: function off(name, cb) {
+    value: function off(_ref2) {
+      var name = _ref2.name,
+          cb = _ref2.cb;
+
       this._removeCallback(name, cb);
     }
   }, {
     key: "emit",
-    value: function emit(name) {
-      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    value: function emit(_ref3) {
+      var name = _ref3.name,
+          _ref3$data = _ref3.data,
+          data = _ref3$data === void 0 ? {} : _ref3$data;
 
       this._triggerEvent(name, data);
     }
   }, {
     key: "hasEvent",
-    value: function hasEvent(name) {
+    value: function hasEvent(_ref4) {
+      var name = _ref4.name;
       return this._events.has(name);
     } // Private helpers.
 
