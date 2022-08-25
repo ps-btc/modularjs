@@ -258,7 +258,9 @@ var EventEmitter = /*#__PURE__*/function () {
         throw new Error("Can't add callback to event (".concat(name, ")! Callback is not a function."));
       }
 
-      if (!this.hasEvent(name)) {
+      if (!this.hasEvent({
+        name: name
+      })) {
         this._createEvent(name);
       }
 
@@ -269,7 +271,9 @@ var EventEmitter = /*#__PURE__*/function () {
   }, {
     key: "_removeCallback",
     value: function _removeCallback(name, rmCb) {
-      if (!this.hasEvent(name)) {
+      if (!this.hasEvent({
+        name: name
+      })) {
         return;
       }
 
@@ -284,7 +288,9 @@ var EventEmitter = /*#__PURE__*/function () {
   }, {
     key: "_triggerEvent",
     value: function _triggerEvent(name, data) {
-      if (!this.hasEvent(name)) {
+      if (!this.hasEvent({
+        name: name
+      })) {
         return;
       }
 

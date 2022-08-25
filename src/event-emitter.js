@@ -37,7 +37,7 @@ class EventEmitter {
             throw new Error(`Can't add callback to event (${name})! Callback is not a function.`);
         }
 
-        if (!this.hasEvent(name)) {
+        if (!this.hasEvent({ name })) {
             this._createEvent(name);
         }
 
@@ -47,7 +47,7 @@ class EventEmitter {
     }
 
     _removeCallback(name, rmCb) {
-        if (!this.hasEvent(name)) {
+        if (!this.hasEvent({ name })) {
             return;
         }
 
@@ -58,7 +58,7 @@ class EventEmitter {
     }
 
     _triggerEvent(name, data) {
-        if (!this.hasEvent(name)) {
+        if (!this.hasEvent({ name })) {
             return;
         }
 
