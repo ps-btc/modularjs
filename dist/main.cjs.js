@@ -52,6 +52,89 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  } else if (call !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
@@ -127,26 +210,116 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-var _default = /*#__PURE__*/function () {
+var EventEmitter = /*#__PURE__*/function () {
+  function EventEmitter() {
+    _classCallCheck(this, EventEmitter);
+
+    this._events = new Map();
+  } // Key functions.
+
+
+  _createClass(EventEmitter, [{
+    key: "on",
+    value: function on(name, cb) {
+      this._addEvent(name, cb);
+    }
+  }, {
+    key: "off",
+    value: function off(name, cb) {
+      this._removeCallback(name, cb);
+    }
+  }, {
+    key: "emit",
+    value: function emit(name) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      this._triggerEvent(name, data);
+    }
+  }, {
+    key: "hasEvent",
+    value: function hasEvent(name) {
+      return this._events.has(name);
+    } // Private helpers.
+
+  }, {
+    key: "_createEvent",
+    value: function _createEvent(name) {
+      this._events.set(name, []);
+    }
+  }, {
+    key: "_addEvent",
+    value: function _addEvent(name, cb) {
+      if (typeof cb !== "function") {
+        throw new Error("Can't add callback to event (".concat(name, ")! Callback is not a function."));
+      }
+
+      if (!this.hasEvent(name)) {
+        this._createEvent(name);
+      }
+
+      this._events.get(name).push({
+        cb: cb
+      });
+    }
+  }, {
+    key: "_removeCallback",
+    value: function _removeCallback(name, rmCb) {
+      if (!this.hasEvent(name)) {
+        return;
+      }
+
+      var filter = function filter(entry) {
+        return entry.cb !== rmCb;
+      };
+
+      var filteredEvents = this._events.get(name).filter(filter);
+
+      this._events.set(name, filteredEvents);
+    }
+  }, {
+    key: "_triggerEvent",
+    value: function _triggerEvent(name, data) {
+      if (!this.hasEvent(name)) {
+        return;
+      }
+
+      this._events.get(name).forEach(function (entry) {
+        entry.cb(data);
+      });
+    }
+  }]);
+
+  return EventEmitter;
+}();
+
+var _default = /*#__PURE__*/function (_EventEmitter) {
+  _inherits(_default, _EventEmitter);
+
+  var _super = _createSuper(_default);
+
   function _default(options) {
+    var _this;
+
     _classCallCheck(this, _default);
 
-    this.mAttr = 'data-' + options.dataName;
-    this.mCaptureEvents = ['mouseenter', 'mouseleave'];
-    this.el = options.el;
+    _this = _super.call(this);
+    _this.mAttr = 'data-' + options.dataName;
+    _this.mCaptureEvents = ['mouseenter', 'mouseleave'];
+    _this.el = options.el;
+    return _this;
   }
 
   _createClass(_default, [{
     key: "mInit",
     value: function mInit(modules) {
-      var _this = this;
+      var _this2 = this;
 
       this.modules = modules;
       this.mCheckEventTarget = this.mCheckEventTarget.bind(this);
 
       if (this.events) {
         Object.keys(this.events).forEach(function (event) {
-          return _this.mAddEvent(event);
+          return _this2.mAddEvent(event);
         });
       }
     }
@@ -158,11 +331,11 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "mDestroy",
     value: function mDestroy() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.events) {
         Object.keys(this.events).forEach(function (event) {
-          return _this2.mRemoveEvent(event);
+          return _this3.mRemoveEvent(event);
         });
       }
     }
@@ -284,7 +457,7 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "call",
     value: function call(func, args, mod, id) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (args && !mod) {
         mod = args;
@@ -293,8 +466,8 @@ var _default = /*#__PURE__*/function () {
 
       if (mod === "*") {
         return Object.keys(this.modules).map(function (_mod) {
-          return Object.keys(_this3.modules[_mod]).map(function (id) {
-            return _this3.modules[_mod][id][func](args);
+          return Object.keys(_this4.modules[_mod]).map(function (id) {
+            return _this4.modules[_mod][id][func](args);
           });
         });
       }
@@ -306,7 +479,7 @@ var _default = /*#__PURE__*/function () {
           }
         } else {
           return Object.keys(this.modules[mod]).map(function (id) {
-            return _this3.modules[mod][id][func](args);
+            return _this4.modules[mod][id][func](args);
           });
         }
       }
@@ -314,9 +487,9 @@ var _default = /*#__PURE__*/function () {
       return null;
     }
   }, {
-    key: "on",
-    value: function on(e, mod, func, id) {
-      var _this4 = this;
+    key: "addEventListener",
+    value: function addEventListener(e, mod, func, id) {
+      var _this5 = this;
 
       if (this.modules[mod]) {
         if (id) {
@@ -325,7 +498,7 @@ var _default = /*#__PURE__*/function () {
           });
         } else {
           Object.keys(this.modules[mod]).forEach(function (i) {
-            _this4.modules[mod][i].el.addEventListener(e, function (o) {
+            _this5.modules[mod][i].el.addEventListener(e, function (o) {
               return func(o);
             });
           });
@@ -341,7 +514,7 @@ var _default = /*#__PURE__*/function () {
   }]);
 
   return _default;
-}();
+}(EventEmitter);
 
 var _default$1 = /*#__PURE__*/function () {
   function _default(options) {

@@ -1,5 +1,11 @@
-export default class {
+import EventEmitter from "./event-emitter";
+
+
+
+export default class extends EventEmitter {
     constructor(options) {
+        super();
+
         this.mAttr = 'data-' + options.dataName;
         this.mCaptureEvents = ['mouseenter', 'mouseleave'];
         this.el = options.el;
@@ -155,7 +161,7 @@ export default class {
         return null;
     }
 
-    on(e, mod, func, id) {
+    addEventListener(e, mod, func, id) {
         if (this.modules[mod]) {
             if (id) {
                 this.modules[mod][id].el.addEventListener(e, o => func(o));
