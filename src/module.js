@@ -58,7 +58,7 @@ export default class extends EventEmitter {
             } else {
                 while (target && target !== document) {
                     if (target.matches(data)) {
-                        if(typeof this.mCallEventMethod(e, event, target) != 'undefined') {
+                        if (this.mCallEventMethod(e, event, target)) {
                             break;
                         }
                     }
@@ -82,7 +82,11 @@ export default class extends EventEmitter {
             }
 
             this[method](e);
+
+            return true;
         }
+
+        return false;
     }
 
     $(query, context) {

@@ -380,7 +380,7 @@ var _default = /*#__PURE__*/function (_EventEmitter) {
         } else {
           while (target && target !== document) {
             if (target.matches(data)) {
-              if (typeof this.mCallEventMethod(e, event, target) != 'undefined') {
+              if (this.mCallEventMethod(e, event, target)) {
                 break;
               }
             }
@@ -411,7 +411,10 @@ var _default = /*#__PURE__*/function (_EventEmitter) {
         }
 
         this[method](e);
+        return true;
       }
+
+      return false;
     }
   }, {
     key: "$",
