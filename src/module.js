@@ -58,7 +58,7 @@ export default class extends EventEmitter {
             } else {
                 while (target && target !== document) {
                     if (target.matches(data)) {
-                        if(this.mCallEventMethod(e, event, target) != 'undefined') {
+                        if(typeof this.mCallEventMethod(e, event, target) != 'undefined') {
                             break;
                         }
                     }
