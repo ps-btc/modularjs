@@ -481,7 +481,11 @@ var _default = /*#__PURE__*/function (_EventEmitter) {
       if (mod === "*") {
         return Object.keys(this.modules).map(function (_mod) {
           return Object.keys(_this4.modules[_mod]).map(function (id) {
-            return _this4.modules[_mod][id][func](args);
+            if (_this4.modules[_mod][id][func]) {
+              return _this4.modules[_mod][id][func](args);
+            }
+
+            return Promise.resolve(null);
           });
         });
       }

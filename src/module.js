@@ -145,7 +145,11 @@ export default class extends EventEmitter {
         if (mod === "*") {
             return Object.keys(this.modules).map((_mod) => {
                 return Object.keys(this.modules[_mod]).map((id) => {
-                    return this.modules[_mod][id][func](args);
+                    if (this.modules[_mod][id][func]) {
+                        return this.modules[_mod][id][func](args);
+                    }
+
+                    return Promise.resolve(null);
                 });
             });
         }
