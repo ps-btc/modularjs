@@ -630,6 +630,7 @@ var _default$1 = /*#__PURE__*/function () {
     key: "addActiveModule",
     value: function addActiveModule(name, id, module) {
       if (this.activeModules[name]) {
+        if (this.activeModules[name].hasOwnProperty(id)) return;
         Object.assign(this.activeModules[name], _defineProperty({}, id, module));
       } else {
         this.activeModules[name] = _defineProperty({}, id, module);

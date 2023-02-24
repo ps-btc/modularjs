@@ -82,6 +82,7 @@ export default class {
 
     addActiveModule(name, id, module) {
         if (this.activeModules[name]) {
+            if (this.activeModules[name].hasOwnProperty(id)) return;
             Object.assign(this.activeModules[name], { [id]: module });
         } else {
             this.activeModules[name] = { [id]: module };
